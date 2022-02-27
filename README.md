@@ -268,7 +268,8 @@ Shoulda::Matchers.configure do |config|
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-2. Check available **node** versions \
+2. Check available **node** versions
 ```
 nvm ls-remote
 ```
+
