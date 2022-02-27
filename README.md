@@ -266,31 +266,31 @@ Shoulda::Matchers.configure do |config|
 * npm = Node Package Manager
 
 1. Install NVM
-```sh
+```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
 2. Check available **node** versions
-```sh
+```bash
 nvm ls-remote
 ```
 
 3. Install **node** version using
-```
+```bash
 nvm install 16.14   #replace 16.14 with chosen version
 ```
 
 4. List installed node versions
-```
+```bash
 nvm ls
 ```
 
 5. Tell nvm to use chosen node version
-```
+```bash
 nvm use 16.14
 ```
 
 6. Check current node version
-```
+```bash
 nvm current
 ```
