@@ -125,7 +125,7 @@
 11. Mongo DB
   1. [https://docs.mongodb.com/manual/reference/sql-comparison/](https://docs.mongodb.com/manual/reference/sql-comparison/)
   2. [https://www.mongodb.com/blog/channel/quickstart](https://www.mongodb.com/blog/channel/quickstart)
-
+12. Coordination game. Have 16 or so buttons, each one has a different color. When the button is pressed, it fills a square on the screen with that colour. Multiple users play at same time to create some 'art' as fast as possible. Maybe an erase button too?
 
 # VS Code shortcuts {#vs-code-shortcuts}
 
