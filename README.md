@@ -109,22 +109,21 @@
     3. [https://github.com/wekan/wekan/wiki/Platforms](https://github.com/wekan/wekan/wiki/Platforms)
 2. Setup GIT
 3. Create Wiki: [https://wiki.js.org/](https://wiki.js.org/)
-    4. [www.Shoutwiki.com](www.Shoutwiki.com)
+    1. [www.Shoutwiki.com](www.Shoutwiki.com)
 4. Create utility to post to Craigslist in bulk
 5. Create blog from scratch
-    5. Using WordPress?
+    1. Using WordPress?
 6. Fantasy football? Javascript + API
-    6. [https://towardsdatascience.com/fantasy-premier-league-value-analysis-python-tutorial-using-the-fpl-api-8031edfe9910](https://towardsdatascience.com/fantasy-premier-league-value-analysis-python-tutorial-using-the-fpl-api-8031edfe9910)
-    7. 
+    1. [https://towardsdatascience.com/fantasy-premier-league-value-analysis-python-tutorial-using-the-fpl-api-8031edfe9910](https://towardsdatascience.com/fantasy-premier-league-value-analysis-python-tutorial-using-the-fpl-api-8031edfe9910) 
 7. Spotify combined playlist
 8. Portfolio site with astronaut
-    8. Space flying behind with mouse movement
-    9. Text in helmet
+    1. Space flying behind with mouse movement
+    2. Text in helmet
 9. Portfolio site normal on mobile, but a mobile in web (with a huge hand?)
 10. Create a fantasy stock picks site
 11. Mongo DB
-  1. [https://docs.mongodb.com/manual/reference/sql-comparison/](https://docs.mongodb.com/manual/reference/sql-comparison/)
-  2. [https://www.mongodb.com/blog/channel/quickstart](https://www.mongodb.com/blog/channel/quickstart)
+    1. [https://docs.mongodb.com/manual/reference/sql-comparison/](https://docs.mongodb.com/manual/reference/sql-comparison/)
+    2. [https://www.mongodb.com/blog/channel/quickstart](https://www.mongodb.com/blog/channel/quickstart)
 12. Coordination game. Have 16 or so buttons, each one has a different color. When the button is pressed, it fills a square on the screen with that colour. Multiple users play at same time to create some 'art' as fast as possible. Maybe an erase button too?
 
 # VS Code shortcuts {#vs-code-shortcuts}
