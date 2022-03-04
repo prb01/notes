@@ -56,48 +56,48 @@
     7. Dart (google)
     8. Scala
 2. Frameworks
-    9. Angular (JS)
-    10. React.js (JS)
-    11. Vue.js (JS)
-    12. ExpressJS (JS)
-    13. Django (Py)
+    1. Angular (JS)
+    2. React.js (JS)
+    3. Vue.js (JS)
+    4. ExpressJS (JS)
+    5. Django (Py)
 3. Client side concepts & technologies
-    14. MVC / React / Redux
-    15. Ajax
-        2. [https://en.wikipedia.org/wiki/Ajax_(programming)](https://en.wikipedia.org/wiki/Ajax_(programming))
-        3. [https://www.w3schools.com/xml/ajax_intro.asp](https://www.w3schools.com/xml/ajax_intro.asp)
+    1. MVC / React / Redux
+    2. Ajax
+        1. [https://en.wikipedia.org/wiki/Ajax_(programming)](https://en.wikipedia.org/wiki/Ajax_(programming))
+        2. [https://www.w3schools.com/xml/ajax_intro.asp](https://www.w3schools.com/xml/ajax_intro.asp)
 4. Server Side Concepts & technologies
-    16. Npm / NodeJS / ExpressJS / Authentication
-    17. Serverless (scalability)
-        4. Lambda (aws)
-        5. SQS
-        6. DynamoDB (noSQL)
+    1. Npm / NodeJS / ExpressJS / Authentication
+    2. Serverless (scalability)
+        1. Lambda (aws)
+        2. SQS
+        3. DynamoDB (noSQL)
 5. Database concepts & technologies
-    18. MongoDB
-        7. [https://www.mongodb.com/nosql-explained/nosql-vs-sql](https://www.mongodb.com/nosql-explained/nosql-vs-sql)
-    19. PostgreSQL
-    20. ORMs
-    21. Redis
+    1. MongoDB
+        1. [https://www.mongodb.com/nosql-explained/nosql-vs-sql](https://www.mongodb.com/nosql-explained/nosql-vs-sql)
+    2. PostgreSQL
+    3. ORMs
+    4. Redis
 6. Work Environment / Management / Deployment
-    22. GIThub
-    23. [Ansible](https://en.wikipedia.org/wiki/Ansible_(software))
-    24. Puppet
-    25. DigitalOcean
-    26. Heroku
-    27. TDD
+    1. GIThub
+    2. [Ansible](https://en.wikipedia.org/wiki/Ansible_(software))
+    3. Puppet
+    4. DigitalOcean
+    5. Heroku
+    6. TDD
 7. Web Design
-    28. WordPress
-    29. Webflow
-    30. Wix
+    1. WordPress
+    2. Webflow
+    3. Wix
 8. Docker
 9. Kubernetes
 10. Terraform
 11. Other
-    31. RegEx
-    32. [Front-End vs Back-End vs Full Stack](https://blog.udacity.com/2014/12/front-end-vs-back-end-vs-full-stack-web-developers.html)
+    1. RegEx
+    2. [Front-End vs Back-End vs Full Stack](https://blog.udacity.com/2014/12/front-end-vs-back-end-vs-full-stack-web-developers.html)
 12. Job opportunities
-    33. Freelancing
-    34. Consulting (web consultancy)
+    1. Freelancing
+    2. Consulting (web consultancy)
 
 
 # Projects {#projects}
