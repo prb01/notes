@@ -296,13 +296,13 @@ nvm current
 ```
 
 
-#REACT
-##Create new React project
+# REACT
+## Create new React project
 ```
 npx create-react-app <project/folder_name>
 ```
 
-##Start React project
+## Start React project
 ```
 cd <project/folder_name>
 npm start
