@@ -294,3 +294,15 @@ nvm use 16.14
 ```bash
 nvm current
 ```
+
+#REACT
+##Create new React project
+```
+npx create-react-app <project/folder_name>
+```
+
+##Start Reac
+```
+cd <project/folder_name>
+npm start
+```
