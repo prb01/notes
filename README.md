@@ -306,3 +306,17 @@ npx create-react-app <project/folder_name>
 cd <project/folder_name>
 npm start
 ```
+
+## Create an env variable to be used in React app
+Note: env variable must begin with 'REACT_APP'
+```
+REACT_APP_API_KEY='xyz' npm start
+```
+OR, create a `.env` file in root of project and add:
+```
+REACT_APP_API_KEY='xyz'
+```
+Env variables are accessed via:
+```
+process.env.ENV_NAME //e.g. process.env.REACT_APP_API_KEY
+```
