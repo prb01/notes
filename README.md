@@ -308,7 +308,7 @@ npm start
 ```
 
 ## Create an env variable to be used in React app
-Note: env variable must begin with 'REACT_APP'
+Note: env variable must begin with 'REACT_APP_'
 ```
 REACT_APP_API_KEY='xyz' npm start
 ```
@@ -320,5 +320,3 @@ Env variables are accessed via:
 ```
 process.env.ENV_NAME //e.g. process.env.REACT_APP_API_KEY
 ```
-
-TEST TEST
