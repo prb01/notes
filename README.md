@@ -321,6 +321,14 @@ Env variables are accessed via:
 process.env.ENV_NAME //e.g. process.env.REACT_APP_API_KEY
 ```
 
+## Create Prod build of react app
+In root directory of project folder run:
+```
+npm run build
+```
+
+This will create a 'build' folder that can be moved elsewhere if required
+
 ## Package.json file to merge front-end to back-end, and upload to Heroku (assumes Heroku setup)
 Add below scripts to Package.json (updated dir & names as required), and then run `npm run deploy:full`
 ```json
