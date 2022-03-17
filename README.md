@@ -321,6 +321,20 @@ Env variables are accessed via:
 process.env.ENV_NAME //e.g. process.env.REACT_APP_API_KEY
 ```
 
+## Package.json file to merge front-end to back-end, and upload to Heroku (assumes Heroku setup)
+Add below scripts to Package.json (updated dir & names as required), and then run `npm run deploy:full`
+```json
+"scripts": {
+    ...    
+    "build:ui": "rm -rf build && cd ../../part2/notes-front/ && npm run build && cp -r build ../../part3/notes-back",
+    "deploy": "git push heroku main",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy && npm run git:fso",
+    "git:fso": "cd ../ && git add -A && git commit -m uibuild && git push && cd notes-back/",
+    "logs:prod": "heroku logs --tail"
+  }
+```
+
+
 # HEROKU
 ## Steps to deploy node app to Heroku (assumes account setup already)
 1. In root of project, create a file called 'Procfile' and add:
