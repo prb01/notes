@@ -374,4 +374,3 @@ git commit -m '<message>'
 git push heroku main
 ```
 
-bla
