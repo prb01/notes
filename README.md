@@ -320,3 +320,42 @@ Env variables are accessed via:
 ```
 process.env.ENV_NAME //e.g. process.env.REACT_APP_API_KEY
 ```
+
+# HEROKU
+## Steps to deploy node app to Heroku (assumes account setup already)
+1. In root of project, create a file called 'Procfile' and add:
+```
+web: npm start
+```
+
+2. If 'PORT' is defined in app, change so that it uses env variable 'PORT' by default like so:
+```js
+const PORT = process.env.PORT || 3001
+```
+
+3. Create a Git repo in root of project
+```
+git init
+```
+
+4. Add .gitignore file to root of project, and add:
+```
+node_modules
+```
+
+5. Install npm Heroku package (only needs to be done once)
+```
+npm install -g heroku
+```
+
+6. Create a Heroku app with:
+```
+heroku create
+```
+
+7. Git push your files to Heroku with:
+```
+git add .
+git commit -m '<message>'
+git push heroku main
+```
