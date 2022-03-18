@@ -382,3 +382,8 @@ git commit -m '<message>'
 git push heroku main
 ```
 
+## Set new ENV variable
+Use below syntax to create/set env variable
+```
+heroku config:set <ENV_NAME>='<VALUE>'
+```
