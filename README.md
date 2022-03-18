@@ -336,8 +336,8 @@ Add below scripts to Package.json (updated dir & names as required), and then ru
     ...    
     "build:ui": "rm -rf build && cd ../../part2/notes-front/ && npm run build && cp -r build ../../part3/notes-back",
     "deploy": "git push heroku main",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy && npm run git:fso",
-    "git:fso": "cd ../ && git add -A && git commit -m uibuild && git push && cd notes-back/",
+    "deploy:full": "npm run build:ui && git add . && echo 'Commit msg for Heroku' && npm run git-commit && npm run deploy && npm run git:fso",
+    "git:fso": "cd ../ && git add -A && echo 'Commit msg for FSO' && git commit && git push && cd phonebook/",
     "logs:prod": "heroku logs --tail"
   }
 ```
