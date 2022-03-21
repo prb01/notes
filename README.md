@@ -294,6 +294,41 @@ nvm use 16.14
 nvm current
 ```
 
+## Create Node project
+1. Run below command to configure the package.json file (note that the project folder should already exist and you should be inside of it)
+```
+npm init
+```
+
+2. Add below to scripts in package.json
+```
+"scripts": {
+    "start": "node index.js",
+    ...
+```
+
+3. Create an index.js file in root of project
+
+4. Run the application using following command (defined in scripts):
+```
+npm start
+```
+
+5. To install other packages, use below syntax:
+```
+npm install <package-name>
+npm install <package-name> --save-dev  #If only to be used for dev
+```
+
+Some helpful packages/libraries to install
+```
+npm install express  #Build backend server (replaces http)
+npm install nodemon --save-dev  #File watcher to reload app
+npm install morgan  #logger
+npm install cors  #cross-origin resource sharing
+npm install mongoose  #Work easily with MongoDB
+npm install dotenv  #Define env variables to use in app
+```
 
 # REACT
 ## Create new React project
