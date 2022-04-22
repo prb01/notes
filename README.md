@@ -404,6 +404,10 @@ const User = ({ users }) => {
  navigate("/about")
 }
 
+const User2 = ({user }) => {
+ //do something with user
+}
+
 const match = useMatch("/users/:id")
 const user = match ? 
   users.find(u => u.id === Number(match.params.id)) : null
