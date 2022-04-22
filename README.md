@@ -377,6 +377,53 @@ Add below scripts to Package.json (updated dir & names as required), and then ru
   }
 ```
 
+# REACT/Router
+Provides library to conditionally render components based on the url in the browser
+## Install
+```
+npm install react-router-dom
+```
+
+## Main functions
+```js
+//App.js
+import { 
+BrowserRouter as Router, 
+Routes, 
+Route, 
+Link,
+useParams,
+useNavigate,
+useMatch } from "react-router-dom"
+
+const User = ({ users }) => {
+ const id = useParams().id
+ const user = users.find(u => u.id === Number(id))
+ const navigate = useNavigate()
+ ...
+ navigate("/about")
+}
+
+const match = useMatch("/users/:id")
+const user = match ? 
+  users.find(u => u.id === Number(match.params.id)) : null
+
+
+return(
+  <Link to="/about">About</Link>
+  
+  <Routes>
+   <Route path="/about" element={<About />} />
+   <Route path="/users/:id" element={<User user={users} />
+   <Route path="/users2/:id" element={<User2 user={user} /> 
+ </Routes>
+)
+
+//Index.js
+<Router>
+ <App />
+</Router>
+```
 
 # HEROKU
 ## Steps to deploy node app to Heroku (assumes account setup already)
