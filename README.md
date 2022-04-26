@@ -448,11 +448,23 @@ export const notesSlice = createSlice({
   reducers: {
     add: (state, action) => {
       state.push(action.payload)
+    },
+    remove: (state, action) => {
+      state = []
     }
   }
 })
 
-export const { add } = notesSlice.actions
+export const { add, remove } = notesSlice.actions
+
+//action creator
+export const addThenRemove = (content) => {
+ return (dispatch) => {
+   setTimeout(() => dispatch(remove()), 5000)
+   dispatch(add("Hello"))
+ }
+}
+
 export default notesSlice.reducer
 ```
 
@@ -486,7 +498,7 @@ Now access store and dispatch actions to it:
 //components/NoteForm.js
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { add } from "./reducers/notesSlice"
+import { add, remove, addThenRemove } from "./reducers/notesSlice"
 
 const NoteForm = () => {
   const notes = useSelector((state) => state.notes
@@ -498,6 +510,13 @@ const NoteForm = () => {
     event.target.value = ""
     dispatch(add(note))
   }
+
+  const handleSubmit2 = event => {
+    event.preventDefault()
+    const note = event.target.value
+    event.target.value = ""
+    dispatch(addThenRemove(note))
+}
   
   return(
     <div>
@@ -511,6 +530,10 @@ const NoteForm = () => {
        <input type="text" />
        <button type="submit">add note</button>
       </form>
+     <form onSubmit={handleSubmit2}>
+       <input type="text" />
+       <button type="submit">add then remove</button>
+     </form>
     </div>
   )
 
