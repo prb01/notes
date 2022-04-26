@@ -429,6 +429,96 @@ return(
 </Router>
 ```
 
+# REACT/REDUX
+## Install
+It is common to use the Redux Toolkit alongside React Redux
+```
+npm install @reduxjs/toolkit react-redux
+```
+
+## Create a Redux Store
+
+Create a "slice" file (e.g. notesSlice.js)
+```js
+import { createSlice } from "@reduxjs/toolkit"
+
+export const notesSlice = createSlice({
+  name: "notes",
+  initialState: {[]},
+  reducers: {
+    add: (state, action) => {
+      state.push(action.payload)
+    }
+  }
+})
+
+export const { add } = notesSlice.actions
+export default notesSlice.reducer
+```
+
+Create a store.js
+```js
+import { configureStore } from "@reduxjs/toolkit"
+import notesReducer from "./reducers/notesSlice"
+
+export default configureStore({
+  reducer: {
+    notes: notesReducer,
+  }
+})
+```
+
+Add to index.js
+```js
+import store from "./app/store"
+import { Provider } from "react-redux"
+
+...
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+```
+
+Now access store and dispatch actions to it:
+```js
+//components/NoteForm.js
+import React from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { add } from "./reducers/notesSlice"
+
+const NoteForm = () => {
+  const notes = useSelector((state) => state.notes
+  const dispatch = useDispatch()
+  
+  const handleSubmit = event => {
+    event.preventDefault()
+    const note = event.target.value
+    event.target.value = ""
+    dispatch(add(note))
+  }
+  
+  return(
+    <div>
+      <div>
+        <ul>
+          {notes.map(note => (
+	  <li>{note.content}</li> )}
+        </ul>
+      </div>
+      <form onSubmit={handleSubmit}>
+       <input type="text" />
+       <button type="submit">add note</button>
+      </form>
+    </div>
+  )
+
+}
+
+export default NoteForm
+```
+
 # HEROKU
 ## Steps to deploy node app to Heroku (assumes account setup already)
 1. In root of project, create a file called 'Procfile' and add:
