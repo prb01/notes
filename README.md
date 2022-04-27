@@ -649,6 +649,9 @@ root.render(
   </Provider>
 )
 ```
+Documentation:
+[MUI/Material UI](https://mui.com/material-ui/getting-started/installation/)
+
 
 # HEROKU
 ## Steps to deploy node app to Heroku (assumes account setup already)
