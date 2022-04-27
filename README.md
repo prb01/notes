@@ -542,6 +542,114 @@ const NoteForm = () => {
 export default NoteForm
 ```
 
+# REACT STYLING
+## Material UI
+Install:
+```
+npm install @mui/material @emotion/react @emotion/styled
+```
+
+Example components:
+```js
+import {
+  Container,
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  Paper,
+  Typography,
+  Alert,
+  Snackbar
+} from "@mui/material"
+
+//Box & Typography
+<Box>
+      <Typography>
+        <strong>{users.currentUser.name}</strong> logged in
+        <Button
+          color="inherit"
+          variant="outlined"
+          onClick={handleLogout}
+          sx={{ marginLeft: 1, marginRight: 1 }}
+        >
+          Logout
+        </Button>
+      </Typography>
+    </Box>
+
+//Menubar
+<AppBar position="static">
+        <Toolbar disableGutters>
+          <Box display="flex" flexGrow={1}>
+            <Button color="inherit" component={Link} to="/">
+              Blogs
+            </Button>
+            <Button color="inherit" component={Link} to="/users">
+              Users
+            </Button>
+          </Box>
+          {users.currentUser === null ? (
+            <Button
+              color="inherit"
+              variant="outlined"
+              component={Link}
+              to="/login"
+              sx={{ marginLeft: 1, marginRight: 1 }}
+            >
+              Login
+            </Button>
+          ) : (
+            <>{loggedIn()}</>
+          )}
+        </Toolbar>
+      </AppBar>
+
+//Notifications
+<Snackbar open={true}>
+      <Alert variant="filled" severity={type}>
+        {msg}
+      </Alert>
+    </Snackbar>
+```
+
+Example global theme override (blogTheme.js ):
+```js
+import { createTheme } from "@mui/material/styles"
+
+export const blogTheme = createTheme({
+  components: {
+    MuiButtonBase: {
+      defaultProps: {},
+    },
+  },
+  palette: {
+    primary: {
+      main: "#023047",
+    },
+    secondary: {
+      main: "#000000",
+    },
+  },
+})
+
+```
+index.js
+```js
+import { ThemeProvider } from "@mui/material"
+
+const root = ReactDOM.createRoot(document.getElementById("root"))
+root.render(
+  <Provider store={store}>
+    <ThemeProvider theme={blogTheme}>
+      <Router>
+        <App />
+      </Router>
+    </ThemeProvider>
+  </Provider>
+)
+```
+
 # HEROKU
 ## Steps to deploy node app to Heroku (assumes account setup already)
 1. In root of project, create a file called 'Procfile' and add:
