@@ -697,3 +697,134 @@ Use below syntax to create/set env variable
 ```
 heroku config:set <ENV_NAME>='<VALUE>'
 ```
+
+# GRAPHQL
+# install
+```
+npm install apollo-server graphql
+```
+
+# Basic steps:
+1. Add dependencies (e.g. ApolloServer)
+2. Define Types (gql)
+3. Define resolvers
+4. Define server (ApolloServer) with types and resolvers
+5. Call server
+
+# Index.js example
+```js
+const { ApolloServer, gql } = require("apollo-server")
+const { v4: uuidv4 } = require("uuid")
+
+let authors = [
+  {
+    name: "Robert Martin",
+    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
+    born: 1952,
+  },
+]
+
+let books = [
+  {
+    title: "Clean Code",
+    published: 2008,
+    author: "Robert Martin",
+    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring"],
+  },
+]
+
+const typeDefs = gql`
+  type Book {
+    title: String!
+    published: Int!
+    author: String!
+    genres: [String!]
+    id: String!
+  }
+
+  type Author {
+    name: String!
+    born: Int
+    id: String!
+    bookCount: Int!
+  }
+
+  type Query {
+    bookCount(author: String): Int!
+    authorCount: Int!
+    allBooks(author: String, genre: String): [Book!]!
+    allAuthors: [Author!]
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String!]
+    ): Book
+    editAuthor(name: String!, setBornTo: Int!): Author
+  }
+`
+
+const resolvers = {
+  Query: {
+    bookCount: (root, args) => {
+      if (!args.author) return books.length
+      return books.filter((b) => b.author === args.author).length
+    },
+    authorCount: (root) => {
+      return authors.length
+    },
+    allBooks: (root, args) => {
+      if (!args.author && !args.genre) return books
+      return books.filter((b) =>
+        args.author
+          ? b.author === args.author
+          : true && args.genre
+          ? b.genres.includes(args.genre)
+          : true
+      )
+    },
+    allAuthors: (root) => {
+      return authors
+    },
+  },
+  Author: {
+    bookCount: (root, args) => {
+      return books.filter((b) => b.author === root.name).length
+    },
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuidv4() }
+      books.push(book)
+      if (!authors.find((a) => a.name === book.author)) {
+        authors.push({ name: args.author, id: uuidv4() })
+      }
+      return book
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find((a) => a.name === args.name)
+      if (!author) return null
+
+      const updatedAuthor = { ...author, born: args.setBornTo }
+      authors = authors.map((a) =>
+        a.name === args.name ? updatedAuthor : a
+      )
+      return updatedAuthor
+    },
+  },
+}
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+})
+
+server.listen().then(({ url }) => {
+  console.log(`Server ready at ${url}`)
+})
+
+```
