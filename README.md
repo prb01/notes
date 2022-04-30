@@ -698,7 +698,7 @@ Use below syntax to create/set env variable
 heroku config:set <ENV_NAME>='<VALUE>'
 ```
 
-# GRAPHQL
+# GRAPHQL/SERVER
 # install
 ```
 npm install apollo-server graphql
@@ -828,3 +828,11 @@ server.listen().then(({ url }) => {
 })
 
 ```
+
+# GRAPHQL/CLIENT
+## Install (note: may need to downgrade React)
+```
+npm install @apollo/client graphql
+```
+
+
