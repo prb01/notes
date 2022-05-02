@@ -835,4 +835,92 @@ server.listen().then(({ url }) => {
 npm install @apollo/client graphql
 ```
 
+To query:
+```js
+import { gql, useQuery } from "@apollo/client"
+...
 
+const ALL_PERSONS = gql`
+  query {
+    allPersons {
+      name
+      phone
+      id
+    }
+    personCount
+  }
+`
+
+const FIND_PERSON = gql`
+  query findPersonByName($nameToSearch: String!) {
+    findPerson(name: $nameToSearch) {
+      name
+      phone
+      id
+      address {
+        street
+        city
+      }
+    }
+  }
+`
+
+const resultAllPersons = useQuery(ALL_PERSONS)
+
+//OR to query repeatedly at interval:
+const resultAllPersons = useQuery(ALL_PERSONS, {
+    pollInterval: 2000
+  })
+
+//OR change the useMutation hook to refetch query when mutation is applied, like so:
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS } ]  })
+
+//With multiple queries to update:
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
+  })
+
+//With variables
+const resultFindPerson = useQuery(FIND_PERSON, {
+    variables: { nameToSearch },
+    skip: !nameToSearch,
+  })
+
+```
+
+
+to mutate:
+```js
+import { gql, useMutation } from '@apollo/client'
+...
+
+const [ createPerson ] = useMutation(CREATE_PERSON)
+
+//OR to refetch queries
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
+  })
+
+createPerson({  variables: { name, phone, street, city } })
+```
+
+handling errors:
+```js
+
+const PersonForm= ({ setError }) => {
+
+  const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [  {query: ALL_PERSONS } ],
+    onError: (error) => {      setError(error.graphQLErrors[0].message)    }  })
+}
+
+const App = () => {
+   const notify = (message) => {    setErrorMessage(message)    setTimeout(() => {      setErrorMessage(null)    }, 10000)  }
+  
+  return (
+     <PersonForm setError={notify} />
+  )
+
+}
+```
