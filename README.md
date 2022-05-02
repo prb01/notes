@@ -835,6 +835,26 @@ server.listen().then(({ url }) => {
 npm install @apollo/client graphql
 ```
 
+index.js
+```js
+import { 
+  ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from '@apollo/client' 
+
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'http://localhost:4000',
+  })
+})
+
+
+ReactDOM.render(
+  <ApolloProvider client={client}>    <App />
+  </ApolloProvider>,  document.getElementById('root')
+)
+```
+
 To query:
 ```js
 import { gql, useQuery } from "@apollo/client"
@@ -894,6 +914,25 @@ to mutate:
 ```js
 import { gql, useMutation } from '@apollo/client'
 ...
+
+const CREATE_PERSON = gql`
+  mutation createPerson(
+    $name: String!
+    $street: String!
+    $city: String!
+    $phone: String
+  ) {
+    addPerson(name: $name, street: $street, city: $city, phone: $phone) {
+      name
+      phone
+      id
+      address {
+        street
+        city
+      }
+    }
+  }
+`
 
 const [ createPerson ] = useMutation(CREATE_PERSON)
 
