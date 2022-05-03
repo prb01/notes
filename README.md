@@ -963,3 +963,120 @@ const App = () => {
 
 }
 ```
+
+user credentials with graphQL:
+```js
+//User model (mongoose)
+const mongoose = require("mongoose")
+
+const schema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  passwordhash: {
+    type: String,
+    required: true
+  },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Person",
+    },
+  ],
+})
+
+module.exports = mongoose.model("User", schema)
+```
+
+```js
+//index.js
+const User = require("./models/user")
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+const saltRounds = 10
+
+const typeDefs = gql`
+type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+  type Token {
+    value: String!
+  }
+
+ type Query {
+    me: User
+  }
+
+type Mutation {
+    createUser(username: String!, password: String!): User
+    login(username: String!, password: String!): Token
+  }
+`
+
+const resolvers = {
+Query: {
+    me: (root, args, context) => {
+      return context.currentUser
+    },
+Mutation: {
+    createUser: async (root, args) => {
+      if (args.password.length < 6) {
+        throw new UserInputError("password must be at least 6 chars")
+      }
+
+      const passwordhash = await bcrypt.hash(args.password, saltRounds)
+      const user = new User({ username: args.username, passwordhash })
+
+      return user.save().catch((error) => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      })
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if (
+        !user ||
+        !(await bcrypt.compare(args.password, user.passwordhash))
+      ) {
+        throw new UserInputError("wrong credentials")
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+    },
+  },
+}
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    if (auth && auth.toLowerCase().startsWith("bearer ")) {
+      const decodedToken = jwt.verify(
+        auth.substring(7),
+        process.env.JWT_SECRET
+      )
+      const currentUser = await User.findById(decodedToken.id).populate(
+        "friends"
+      )
+      return { currentUser }
+    }
+  },
+})
+
+server.listen().then(({ url }) => {
+  console.log(`Server ready at ${url}`)
+})
+```
+
