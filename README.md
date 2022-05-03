@@ -1014,6 +1014,12 @@ type User {
 type Mutation {
     createUser(username: String!, password: String!): User
     login(username: String!, password: String!): Token
+    addPerson(
+      name: String!
+      phone: String
+      street: String!
+      city: String!
+    ): Person
   }
 `
 
@@ -1053,6 +1059,25 @@ Mutation: {
       }
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+    },
+    addPerson: async (root, args, context) => {
+      const person = new Person({ ...args })
+      const currentUser = context.currentUser
+
+       if (!currentUser) {
+         throw new AuthenticationError("not authenticated")
+       }
+
+      try {
+        await person.save()
+        currentUser.friends = currentUser.friends.concat(person)
+        await currentUser.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+      return person
     },
   },
 }
