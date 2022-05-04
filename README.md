@@ -829,142 +829,7 @@ server.listen().then(({ url }) => {
 
 ```
 
-# GRAPHQL/CLIENT
-## Install (note: may need to downgrade React)
-```
-npm install @apollo/client graphql
-```
-
-index.js
-```js
-import { 
-  ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from '@apollo/client' 
-
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: 'http://localhost:4000',
-  })
-})
-
-
-ReactDOM.render(
-  <ApolloProvider client={client}>    <App />
-  </ApolloProvider>,  document.getElementById('root')
-)
-```
-
-To query:
-```js
-import { gql, useQuery } from "@apollo/client"
-...
-
-const ALL_PERSONS = gql`
-  query {
-    allPersons {
-      name
-      phone
-      id
-    }
-    personCount
-  }
-`
-
-const FIND_PERSON = gql`
-  query findPersonByName($nameToSearch: String!) {
-    findPerson(name: $nameToSearch) {
-      name
-      phone
-      id
-      address {
-        street
-        city
-      }
-    }
-  }
-`
-
-const resultAllPersons = useQuery(ALL_PERSONS)
-
-//OR to query repeatedly at interval:
-const resultAllPersons = useQuery(ALL_PERSONS, {
-    pollInterval: 2000
-  })
-
-//OR change the useMutation hook to refetch query when mutation is applied, like so:
-const [ createPerson ] = useMutation(CREATE_PERSON, {
-    refetchQueries: [ { query: ALL_PERSONS } ]  })
-
-//With multiple queries to update:
-const [ createPerson ] = useMutation(CREATE_PERSON, {
-    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
-  })
-
-//With variables
-const resultFindPerson = useQuery(FIND_PERSON, {
-    variables: { nameToSearch },
-    skip: !nameToSearch,
-  })
-
-```
-
-
-to mutate:
-```js
-import { gql, useMutation } from '@apollo/client'
-...
-
-const CREATE_PERSON = gql`
-  mutation createPerson(
-    $name: String!
-    $street: String!
-    $city: String!
-    $phone: String
-  ) {
-    addPerson(name: $name, street: $street, city: $city, phone: $phone) {
-      name
-      phone
-      id
-      address {
-        street
-        city
-      }
-    }
-  }
-`
-
-const [ createPerson ] = useMutation(CREATE_PERSON)
-
-//OR to refetch queries
-const [ createPerson ] = useMutation(CREATE_PERSON, {
-    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
-  })
-
-createPerson({  variables: { name, phone, street, city } })
-```
-
-handling errors:
-```js
-
-const PersonForm= ({ setError }) => {
-
-  const [ createPerson ] = useMutation(CREATE_PERSON, {
-    refetchQueries: [  {query: ALL_PERSONS } ],
-    onError: (error) => {      setError(error.graphQLErrors[0].message)    }  })
-}
-
-const App = () => {
-   const notify = (message) => {    setErrorMessage(message)    setTimeout(() => {      setErrorMessage(null)    }, 10000)  }
-  
-  return (
-     <PersonForm setError={notify} />
-  )
-
-}
-```
-
-user credentials with graphQL:
+## Authentication
 ```js
 //User model (mongoose)
 const mongoose = require("mongoose")
@@ -1105,3 +970,268 @@ server.listen().then(({ url }) => {
 })
 ```
 
+
+# GRAPHQL/CLIENT
+## Install (note: may need to downgrade React)
+```
+npm install @apollo/client graphql
+```
+
+index.js
+```js
+import { 
+  ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from '@apollo/client' 
+
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'http://localhost:4000',
+  })
+})
+
+
+ReactDOM.render(
+  <ApolloProvider client={client}>    <App />
+  </ApolloProvider>,  document.getElementById('root')
+)
+```
+
+To query:
+```js
+import { gql, useQuery } from "@apollo/client"
+...
+
+const ALL_PERSONS = gql`
+  query {
+    allPersons {
+      name
+      phone
+      id
+    }
+    personCount
+  }
+`
+
+const FIND_PERSON = gql`
+  query findPersonByName($nameToSearch: String!) {
+    findPerson(name: $nameToSearch) {
+      name
+      phone
+      id
+      address {
+        street
+        city
+      }
+    }
+  }
+`
+
+const resultAllPersons = useQuery(ALL_PERSONS)
+
+//OR to query repeatedly at interval:
+const resultAllPersons = useQuery(ALL_PERSONS, {
+    pollInterval: 2000
+  })
+
+//OR change the useMutation hook to refetch query when mutation is applied, like so:
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS } ]  })
+
+//With multiple queries to update:
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
+  })
+
+//With variables
+const resultFindPerson = useQuery(FIND_PERSON, {
+    variables: { nameToSearch },
+    skip: !nameToSearch,
+  })
+
+```
+
+
+to mutate:
+```js
+import { gql, useMutation } from '@apollo/client'
+...
+
+const CREATE_PERSON = gql`
+  mutation createPerson(
+    $name: String!
+    $street: String!
+    $city: String!
+    $phone: String
+  ) {
+    addPerson(name: $name, street: $street, city: $city, phone: $phone) {
+      name
+      phone
+      id
+      address {
+        street
+        city
+      }
+    }
+  }
+`
+
+const [ createPerson ] = useMutation(CREATE_PERSON)
+
+//OR to refetch queries
+const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [ { query: ALL_PERSONS }, { query: OTHER_QUERY }, { query: ... } ] // pass as many queries as you need
+  })
+
+createPerson({  variables: { name, phone, street, city } })
+```
+
+handling errors:
+```js
+
+const PersonForm= ({ setError }) => {
+
+  const [ createPerson ] = useMutation(CREATE_PERSON, {
+    refetchQueries: [  {query: ALL_PERSONS } ],
+    onError: (error) => {      setError(error.graphQLErrors[0].message)    }  })
+}
+
+const App = () => {
+   const notify = (message) => {    setErrorMessage(message)    setTimeout(() => {      setErrorMessage(null)    }, 10000)  }
+  
+  return (
+     <PersonForm setError={notify} />
+  )
+
+}
+```
+
+## Authentication (client-side)
+App.Js:
+```js
+import {  useApolloClient } from "@apollo/client"
+import { useEffect, useState } from "react"
+import Notify from "./components/Notify"
+
+const App = () => {
+  const [token, setToken] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const client = useApolloClient()
+
+  if (result.loading)  {
+    return <div>loading...</div>
+  }
+
+  const logout = () => {    
+    setToken(null)    
+    localStorage.clear()    
+    client.resetStore() //clear gql cache 
+  }
+
+  if (!token) {    
+    return (      
+      <>        
+       <Notify errorMessage={errorMessage} />
+        <LoginForm setToken={setToken} setError={notify} />      
+      </>    
+    )
+  }
+
+  return (
+    <>
+      <Notify errorMessage={errorMessage} />
+      <button onClick={logout}>logout</button>      <Persons persons={result.data.allPersons} />
+    </>
+  )
+}
+```
+
+LoginForm.js component:
+```js
+import { useState, useEffect } from "react"
+import { useMutation } from "@apollo/client"
+import { LOGIN } from "../queries"
+
+const LoginForm = ({ setError, setToken }) => {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  const [login, result] = useMutation(LOGIN, {
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    },
+  })
+
+  useEffect(() => {
+    if (result.data) {
+      const token = result.data.login.value
+      setToken(token)
+      localStorage.setItem("phonenumbers-user-token", token)
+    }
+  }, [result.data]) // eslint-disable-line
+  
+  const submit = async (event) => {
+    event.preventDefault()
+
+    login({ variables: { username, password } })
+  }
+
+  return (
+    <div>
+      <form onSubmit={submit}>
+        <div>
+          username{" "}
+          <input
+            value={username}
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password{" "}
+          <input
+            type="password"
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
+  )
+}
+
+export default LoginForm
+
+```
+
+queries.js
+```js
+export const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      value
+    }
+  }
+`
+```
+
+index.js (adding token to header):
+```js
+import { setContext } from "@apollo/client/link/context"
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("phonenumbers-user-token")
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `bearer ${token}` : null,
+    },
+  }
+})
+
+const httpLink = new HttpLink({ uri: "http://localhost:4000" })
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+})
+```
