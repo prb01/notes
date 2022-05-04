@@ -699,6 +699,8 @@ heroku config:set <ENV_NAME>='<VALUE>'
 ```
 
 # GRAPHQL/SERVER
+# Example code:
+[Modularizing your GraphQL schema code](https://www.apollographql.com/blog/backend/schema-design/modularizing-your-graphql-schema-code/)
 # install
 ```
 npm install apollo-server graphql
@@ -972,6 +974,9 @@ server.listen().then(({ url }) => {
 
 
 # GRAPHQL/CLIENT
+## Example code
+[Modularizing your GraphQL schema code](https://medium.com/@peterpme/thoughts-on-structuring-your-apollo-queries-mutations-939ba4746cd8)
+
 ## Install (note: may need to downgrade React)
 ```
 npm install @apollo/client graphql
