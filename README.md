@@ -829,7 +829,7 @@ server.listen().then(({ url }) => {
 
 ```
 
-## Authentication
+## Authentication (server-side)
 ```js
 //User model (mongoose)
 const mongoose = require("mongoose")
@@ -1121,6 +1121,13 @@ const App = () => {
   if (result.loading)  {
     return <div>loading...</div>
   }
+
+  useEffect(() => {
+    const localToken = localStorage.getItem("phonenumbers-user-token")
+    if (localToken) {
+      setToken(localToken)
+    }
+  }, [])
 
   const logout = () => {    
     setToken(null)    
