@@ -1247,3 +1247,81 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
 })
 ```
+
+# REACT NATIVE
+## Install
+First instal expo. Expo is a platform that eases the setup, development, building, and deployment of React Native applications.
+```
+npm install --global expo-cli
+```
+
+Install Android Studio (to use as emulator)
+```
+cd /tmp
+wget https://dl.google.com/dl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
+```
+```
+sudo tar -zxvf android-studio-*-linux.tar.gz
+
+sudo mv android-studio /opt/
+```
+```
+sudo ln -sf /opt/android-studio/bin/studio.sh /bin/android-studio
+```
+```
+sudo nano /usr/share/applications/android-studio.desktop
+```
+```
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Android Studio
+Comment=Android Studio
+Exec=bash -i "/opt/android-studio/bin/studio.sh" %f
+Icon=/opt/android-studio/bin/studio.png
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+StartupWMClass=jetbrains-android-studio
+Name[en_GB]=android-studio.desktop
+```
+
+Next, setup Android Studio so you can use emulator:
+[Expo-AndroidStudio Emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+
+
+## Initialize project
+```
+expo init PROJECTNAME --template expo-template-blank@sdk-44 --npm
+```
+
+## Setup Lint
+```
+npm install --save-dev eslint @babel/eslint-parser eslint-plugin-react eslint-plugin-react-native
+```
+
+configure by creating `.eslintrc` file
+```
+{
+  "plugins": ["react", "react-native"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parser": "@babel/eslint-parser",
+  "env": {
+    "react-native/react-native": true
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
+  }
+}
+```
+
+add script to `package.json`
+```
+"lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern"
+```
