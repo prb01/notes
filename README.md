@@ -1414,6 +1414,9 @@ on:
   push:
     branches:
       - master
+  pull_request:    
+    branches: [master]    
+    types: [opened, synchronize]
 
 jobs:
   simple_deployment_pipeline:
@@ -1437,4 +1440,104 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+      - name: heroku deployment
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message),' '), '#skip') }}  
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "fso-pokedex-prb01"
+          heroku_email: "p.bergstroem@gmail.com"
+          healthcheck: "https://fso-pokedex-prb01.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
+      - name: Discord | Success
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: github.event_name == 'push' && success()
+        with:
+          severity: info
+          text: 'Successfully deployed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Discord | Warning
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: github.event_name == 'push' && cancelled()
+        with:
+          severity: warn
+          text: 'Warning during deployment'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Discord | Error
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: github.event_name == 'push' && failure()
+        with:
+          severity: error
+          text: 'Error during deployment'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    if: ${{ !contains(join(toJson(github.event.commits.*.message),' '), '#skip') }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' }}  
+        uses: anothrNick/github-tag-action@3840ec22ac98e14d981375e3ae2d8d0392964521
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+```
+
+## Sample for creating scheduled action
+```yml
+name: Scheduled Health Check
+
+on:
+  schedule:
+    - cron:  '0 0 1 * *'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: URL Health Check
+        uses: Jtalk/url-health-check-action@v2
+        with:
+          url: https://fso-pokedex-prb01.herokuapp.com/
+          max-attempts: 3
+          retry-delay: 5s
+      - name: Discord | Success
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }} 
+        uses: Ilshidur/action-discord@0.3.2
+        if: success()
+        with:
+          args: 'prb01 | Healthcheck successfull'
+      - name: Discord | Error
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }} 
+        uses: Ilshidur/action-discord@0.3.2
+        if: failure()
+        with:
+          args: 'prb01 | Healthcheck failed'
+```
+# DOCKER
+## Install for Fedora
+[Install Docker steps](https://docs.docker.com/engine/install/fedora/#set-up-the-repository)
+```
+sudo dnf -y install dnf-plugins-core
+```
+```
+sudo dnf config-manager \
+    --add-repo \
+    https://download.docker.com/linux/fedora/docker-ce.repo
+```
+```
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
+
+Start docker:
+```
+sudo systemctl start docker
 ```
