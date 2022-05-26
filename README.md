@@ -1397,3 +1397,44 @@ const doShopping = async () => {
 doShopping();
 ```
 
+# CI/CD (Github Actions)
+## Install
+1. Ensure Personal Access Token has access to make changes to workflow in Github
+2. In the GIT repo, create a `.github/workflows` directory. YAML workflow files will be saved here
+3. Add .yml files to the folder with specifications
+4. See actions by going to your GitHub repo and then clicking on Actions at top
+
+Note: tabs are important in YAML files
+
+## Sample YAML file
+```yml
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: npm install
+        run: npm install
+      - name: lint        
+        run: npm run eslint
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with: 
+          command: npm run test:e2e
+          start: npm run start-prod
+          wait-on: http://localhost:5000
+```
