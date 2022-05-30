@@ -1541,3 +1541,68 @@ Start docker:
 ```
 sudo systemctl start docker
 ```
+
+## Dockerfile
+
+
+## Compose
+Ability to create a YAML file with all images needed.
+
+First, create a yaml file - example (docker-compose.dev.yml):
+```yml
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:
+      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD
+    volumes: # Declare the volume
+      - ./redis_data:/data
+```
+
+Next, you can run this by using:
+```
+sudo docker compose -f docker-compose.dev.yml up -d
+```
+`-f`: specifies file to run
+`-d`: specified to run in background
+
+To stop running container:
+```
+sudo docker compose -f docker-compose.dev.yml down --volumes
+```
+`--volumes or -v`: removes named volumes declared in compose file (clean slate)
+
+## Cleaning up
+
+Check images:
+```
+sudo docker image ls -a
+```
+
+Remove all images that don't have a running container:
+```
+sudo docker rmi $(sudo docker images -q) -f
+```
+
+Check containers:
+```
+sudo docker container ls -a
+```
+
+Remove all **stopped** containers:
+```
+sudo docker container prune
+```
