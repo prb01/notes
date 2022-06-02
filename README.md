@@ -698,6 +698,29 @@ Use below syntax to create/set env variable
 heroku config:set <ENV_NAME>='<VALUE>'
 ```
 
+## PostGres with Heroku
+1. Create a Heroku app:
+```
+heroku create
+```
+
+2. Add PostGres:
+```
+heroku addons:create heroku-postgresql:hobby-dev -a <app-name>
+```
+
+3. Get the db URL:
+```
+heroku config -a <app-name>
+# DATABASE_URL: postgres://<username>:<password>@<host-of-postgres-addon>:5432/<db-name>
+```
+
+4. Access PostGres:
+```
+heroku run psql -h <host-of-postgres-addon> -p 5432 -U <username> <dbname> -a <app-name>
+```
+
+
 # GRAPHQL/SERVER
 # Example code:
 [Modularizing your GraphQL schema code](https://www.apollographql.com/blog/backend/schema-design/modularizing-your-graphql-schema-code/)
